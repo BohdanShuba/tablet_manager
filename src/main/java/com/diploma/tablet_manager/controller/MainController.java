@@ -1,11 +1,14 @@
 package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.Drug;
+import com.diploma.tablet_manager.dto.DrugDto;
+import com.diploma.tablet_manager.service.DrugService;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -15,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final DrugServiceImpl drugServiceImpl;
+    private final DrugService drugService;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -24,15 +27,15 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Map<String, Object> model) {
-        List<Drug> response = drugServiceImpl.findAllDrugs();
+        List<Drug> response = drugService.findAllDrugs();
         model.put("drugs", response); // model.put("drugs", drugServiceImpl.getAllDrugs());
         return "main";
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String name, @RequestParam String instruction, @RequestParam int id_purpose, Map<String, Object> model) {
-        drugServiceImpl.addNewDrug(name, instruction, id_purpose);
-        List<Drug> response = drugServiceImpl.findAllDrugs();
+    public String add(@RequestBody DrugDto drugDto, Map<String, Object> model) {
+        drugService.addNewDrug(drugDto);
+        List<Drug> response = drugService.findAllDrugs();
         model.put("drugs", response);
         return "main";
     }
@@ -40,7 +43,7 @@ public class MainController {
 
     @PostMapping("filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {
-        List<Drug> response = drugServiceImpl.findByNameDrugs(filter);
+        List<Drug> response = drugService.findByNameDrugs(filter);
         model.put("drugs", response);
         return "main";
     }

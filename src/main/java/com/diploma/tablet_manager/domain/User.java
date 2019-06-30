@@ -25,6 +25,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> role;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserDrug> drugs;
+
     public User(String login, String password) {
         this.login = login;
         this.password = password;

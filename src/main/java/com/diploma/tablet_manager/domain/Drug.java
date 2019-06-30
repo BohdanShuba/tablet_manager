@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "drug")
@@ -16,11 +17,14 @@ public class Drug {
     private Integer id;
     private String name;
     private String instruction;
-    private Integer id_purpose;
+    @ManyToOne
+    private Classification drugClassification;
+    @OneToMany(mappedBy = "drug")
+    private List<UserDrug> userDrugList;
 
-    public Drug(String name, String instruction, int id_purpose) {
+    public Drug(String name, String instruction, Classification classification) {
         this.name = name;
         this.instruction = instruction;
-        this.id_purpose = id_purpose;
+        this.drugClassification = classification;
     }
 }

@@ -19,18 +19,6 @@ public class RegistrationController {
 
     private final UserServiceImpl userServiceImpl;
 
-/*
-    @PostMapping("/add")
-    public String addUser(LoginDto loginDto, Map<String, Object> model) {
-        User userFromDb = userServiceImpl.findUserByLogin(loginDto.getLogin());
-        if (userFromDb != null) {
-            model.put("drugs", "User exists!");
-            return "registration";
-        }
-        userServiceImpl.addNewUser(loginDto);
-        return "redirect:/login";
-    }
-*/
     @PostMapping("/add")
     public String addUser(LoginDto loginDto, Map<String, Object> model) {
         User userFromDb = userServiceImpl.findUserByLogin(loginDto.getLogin());

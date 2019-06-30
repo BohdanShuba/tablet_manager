@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(login);
     }
 
-
+    @Override
     public User addNewUser(LoginDto loginDto) {
         User user = new User(loginDto.getLogin(), passwordEncoder.encode(loginDto.getPassword()));
         user.setEnabled(true);
