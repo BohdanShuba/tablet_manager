@@ -11,9 +11,8 @@ import javax.persistence.*;
 public class Classification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
-    private Character ATCCode;
+    private Character atcCode;
     private String codeDescription;
 
 

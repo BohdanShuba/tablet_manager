@@ -2,12 +2,14 @@ package com.diploma.tablet_manager.service;
 
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.dto.DrugDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface DrugService {
 
-    List<Drug> findAllDrugs();
+    List<Drug> getAllDrugs();
     Drug addNewDrug(DrugDto drugDto);
     List<Drug> findByNameDrugs(String filter);
+    Page<Drug> getPageDrugs(int page, int limit);
 }

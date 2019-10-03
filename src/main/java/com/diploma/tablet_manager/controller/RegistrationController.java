@@ -2,10 +2,8 @@ package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.User;
 import com.diploma.tablet_manager.dto.LoginDto;
-import com.diploma.tablet_manager.repos.UserRepository;
 import com.diploma.tablet_manager.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +25,7 @@ public class RegistrationController {
             model.put("drugs", "User exists!");
             return "registration";
         }
-
         userServiceImpl.addNewUser(loginDto);
         return "redirect:/login";
-
     }
-
 }

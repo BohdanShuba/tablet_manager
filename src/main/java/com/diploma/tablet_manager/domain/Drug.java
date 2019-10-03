@@ -13,18 +13,17 @@ import java.util.List;
 public class Drug {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
     private String name;
     private String instruction;
     @ManyToOne
-    private Classification drugClassification;
+    private Classification classification;
     @OneToMany(mappedBy = "drug")
     private List<UserDrug> userDrugList;
 
     public Drug(String name, String instruction, Classification classification) {
         this.name = name;
         this.instruction = instruction;
-        this.drugClassification = classification;
+        this.classification = classification;
     }
 }
