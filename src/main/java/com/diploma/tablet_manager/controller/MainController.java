@@ -7,6 +7,8 @@ import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +32,10 @@ public class MainController {
         return "greeting";
     }
 
+    @GetMapping("/admin/adm")
+    public String adm(Map<String, Object> model) {
+        return "admpage";
+    }
 
     @GetMapping("/main")
     public String main(Map<String, Object> model, Integer page, Integer limit) {
@@ -48,8 +54,9 @@ public class MainController {
     }
 
 
-    @PostMapping("/main")
+    @PostMapping("/admin/adm")
     public String add(@ModelAttribute DrugDto drugDto, Map<String, Object> model) {
+        System.out.println("Хули блять?");
         try {
             log.info("Add drug. Drug: " + drugDto);
             drugServiceImpl.addNewDrug(drugDto);
@@ -59,7 +66,7 @@ public class MainController {
         } catch (Exception e) {
             log.error("Cannot add drug", e);
         }
-        return "main";
+        return "admpage";
     }
 
 
