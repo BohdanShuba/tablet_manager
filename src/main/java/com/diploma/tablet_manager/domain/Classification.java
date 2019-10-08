@@ -14,6 +14,4 @@ public class Classification {
     private Integer id;
     private Character atcCode;
     private String codeDescription;
-
-
 }

@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,6 +35,12 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public Page<Drug> getPageDrugs(int page, int limit) {
         return drugRepository.findAll(PageRequest.of(page, limit, Sort.Direction.ASC, "name"));
+    }
+
+    public String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUserName = authentication.getName();
+            return currentUserName;
     }
 
     public List<PageDto> getPagesNumbers(Page<Drug> page) {

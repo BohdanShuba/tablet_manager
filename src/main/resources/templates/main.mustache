@@ -37,8 +37,8 @@
             <tr>
                 <td>{{name}}</td>
                 <td><a href="{{instruction}}">instruction</a></td>
-                <td><button value={{id}} class="btn btn-primary" type="submit">add</button></td>
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <form action="/addr"> <td><button name="name" value={{name}} class="btn btn-primary" type="submit">add</button></td>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/></form>
             </tr>
         {{/page}}
         </tbody>

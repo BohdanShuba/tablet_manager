@@ -7,8 +7,6 @@ import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,10 +51,14 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/addr")
+    public String addDrugUser(@RequestParam  String name, Map<String, Object> model) {
+        model.put("name", name);
+        return "addUserDrug";
+    }
 
     @PostMapping("/admin/adm")
     public String add(@ModelAttribute DrugDto drugDto, Map<String, Object> model) {
-        System.out.println("Хули блять?");
         try {
             log.info("Add drug. Drug: " + drugDto);
             drugServiceImpl.addNewDrug(drugDto);
