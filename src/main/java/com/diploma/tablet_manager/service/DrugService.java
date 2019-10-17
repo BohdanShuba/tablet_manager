@@ -12,4 +12,5 @@ public interface DrugService {
     Drug addNewDrug(DrugDto drugDto);
     List<Drug> findByNameDrugs(String filter);
     Page<Drug> getPageDrugs(int page, int limit);
+    Drug findByIdDrug (Integer id);
 }

@@ -7,12 +7,14 @@ import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +53,22 @@ public class MainController {
         return "main";
     }
 
+    @ModelAttribute
+    LocalDate initLocalDate() {
+        return LocalDate.now();
+    }
+
     @GetMapping("/addr")
-    public String addDrugUser(@RequestParam  String name, Map<String, Object> model) {
+    public String addDrugUser(@RequestParam  String name, Integer id, Map<String, Object> model) {
+        model.put("id", id);
         model.put("name", name);
         return "addUserDrug";
+    }
+
+    @PostMapping("userDr")
+    public String addDrugUser(@RequestParam Integer id, Integer quantity, @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)  @ModelAttribute LocalDate expirationDate, Map<String, Object> model) {
+        drugServiceImpl.addDrugToUser(id, quantity, expirationDate);
+        return "main";
     }
 
     @PostMapping("/admin/adm")

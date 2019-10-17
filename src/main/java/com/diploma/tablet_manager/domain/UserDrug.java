@@ -1,6 +1,7 @@
 package com.diploma.tablet_manager.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,4 +20,10 @@ public class UserDrug {
     private User user;
     @OneToMany(mappedBy = "userDrug", fetch = FetchType.EAGER)
     private Set<UserDrugQuantity> quantityList;
+
+    public UserDrug(Drug drug, User user) {
+        this.drug = drug;
+        this.user = user;
+    }
+
 }

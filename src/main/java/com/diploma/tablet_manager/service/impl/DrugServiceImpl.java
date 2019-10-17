@@ -1,21 +1,19 @@
 package com.diploma.tablet_manager.service.impl;
 
-import com.diploma.tablet_manager.domain.Classification;
-import com.diploma.tablet_manager.domain.Drug;
+import com.diploma.tablet_manager.domain.*;
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.PageDto;
 import com.diploma.tablet_manager.repos.ClassificationRepository;
 import com.diploma.tablet_manager.repos.DrugRepository;
+import com.diploma.tablet_manager.repos.UserDrugQuantityRepository;
 import com.diploma.tablet_manager.service.DrugService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +24,8 @@ public class DrugServiceImpl implements DrugService {
 
     private final DrugRepository drugRepository;
     private final ClassificationRepository classificationRepository;
+    private final UserDrugQuantityRepository userDrugQuantityRepository;
+    private final UserServiceImpl userServiceImpl;
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -37,17 +37,12 @@ public class DrugServiceImpl implements DrugService {
         return drugRepository.findAll(PageRequest.of(page, limit, Sort.Direction.ASC, "name"));
     }
 
-    public String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentUserName = authentication.getName();
-            return currentUserName;
-    }
 
     public List<PageDto> getPagesNumbers(Page<Drug> page) {
         List<PageDto> listPageDto = new ArrayList<>();
         int countPage = 0;
         for (int i = 0; i < page.getTotalPages(); i++) {
-            PageDto pageDto = new PageDto(++countPage,"?page="+i);
+            PageDto pageDto = new PageDto(++countPage, "?page=" + i);
             listPageDto.add(pageDto);
         }
         return listPageDto;
@@ -61,12 +56,25 @@ public class DrugServiceImpl implements DrugService {
         return drugRepository.save(drug);
     }
 
+
+    public UserDrugQuantity addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate) {
+        User currentUser = userServiceImpl.getCurrentUser();
+        Drug currentDrug = findByIdDrug(id);
+        UserDrug userDrug = new UserDrug(currentDrug, currentUser);
+        UserDrugQuantity userDrugQuantity = new UserDrugQuantity(userDrug, quantity, expirationDate);
+        return userDrugQuantityRepository.save(userDrugQuantity);
+    }
+
+    @Override
+    public Drug findByIdDrug(Integer idDrug) {
+        return drugRepository.findById(idDrug);
+    }
+
     @Override
     public List<Drug> findByNameDrugs(String nameDrug) {
         if (nameDrug != null && !nameDrug.isEmpty()) {
             return drugRepository.findByName(nameDrug);
         }
-
         return Collections.emptyList();
     }
 }
