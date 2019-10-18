@@ -18,8 +18,6 @@ public class Drug {
     private String instruction;
     @ManyToOne
     private Classification classification;
-    @OneToMany(mappedBy = "drug")
-    private List<UserDrug> userDrugList;
 
     public Drug(String name, String instruction, Classification classification) {
         this.name = name;

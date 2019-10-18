@@ -1,7 +1,9 @@
 package com.diploma.tablet_manager.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,6 +11,9 @@ import java.util.Set;
 @Entity
 @Table(name = "user_drug")
 @Data
+@EqualsAndHashCode(exclude = "quantityList")
+@ToString(exclude = "quantityList")
+@NoArgsConstructor
 public class UserDrug {
 
     @Id

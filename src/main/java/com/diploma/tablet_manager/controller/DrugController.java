@@ -1,20 +1,18 @@
 package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.Drug;
-import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.PageDto;
+import com.diploma.tablet_manager.dto.UserDrugDto;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,18 +21,18 @@ import java.util.Optional;
 @Log4j2
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class DrugController {
 
     private final DrugServiceImpl drugServiceImpl;
 
+    @PostMapping("/drug/user/add")
+    public String addDrugUser(@ModelAttribute UserDrugDto userDrugDto, Map<String, Object> model) {
+        drugServiceImpl.addDrugToUser(userDrugDto.getDrugId(), userDrugDto.getQuantity(), userDrugDto.getExpirationDate());
+        return "main";
+    }
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
         return "greeting";
-    }
-
-    @GetMapping("/admin/adm")
-    public String adm(Map<String, Object> model) {
-        return "admpage";
     }
 
     @GetMapping("/main")
@@ -53,38 +51,12 @@ public class MainController {
         return "main";
     }
 
-    @ModelAttribute
-    LocalDate initLocalDate() {
-        return LocalDate.now();
-    }
-
     @GetMapping("/addr")
-    public String addDrugUser(@RequestParam  String name, Integer id, Map<String, Object> model) {
+    public String addDrugUser(@RequestParam String name, Integer id, Map<String, Object> model) {
         model.put("id", id);
         model.put("name", name);
         return "addUserDrug";
     }
-
-    @PostMapping("userDr")
-    public String addDrugUser(@RequestParam Integer id, Integer quantity, @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)  @ModelAttribute LocalDate expirationDate, Map<String, Object> model) {
-        drugServiceImpl.addDrugToUser(id, quantity, expirationDate);
-        return "main";
-    }
-
-    @PostMapping("/admin/adm")
-    public String add(@ModelAttribute DrugDto drugDto, Map<String, Object> model) {
-        try {
-            log.info("Add drug. Drug: " + drugDto);
-            drugServiceImpl.addNewDrug(drugDto);
-            List<Drug> response = drugServiceImpl.getAllDrugs();
-            model.put("drugs", response);
-            log.info("Drug response: " + response);
-        } catch (Exception e) {
-            log.error("Cannot add drug", e);
-        }
-        return "admpage";
-    }
-
 
     @PostMapping("filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {

@@ -15,11 +15,11 @@
     </div>
     <div>{{name}}</div>
     <div>
-        <form method="post" action="/userDr">
+        <form method="post" action="/drug/user/add">
             <input type="number" name="quantity" placeholder="Введите количество"/>
             <input type="date" name="expirationDate" placeholder="Введите дату"/>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button name="id" value={{id}} class="btn btn-primary" type="submit">Add</button>
+            <button name="drugId" value={{id}} class="btn btn-primary" type="submit">Add</button>
         </form>
     </div>
 </div>
