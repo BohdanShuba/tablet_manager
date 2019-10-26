@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "user_drug_quantity")
+@Table(name = "user_drug_quantity", uniqueConstraints =
+    @UniqueConstraint(name = "user_drug_quantity_unique_constraint", columnNames = {"expirationDate","user_drug_id"}))
 @Data
 @NoArgsConstructor
 public class UserDrugQuantity {
@@ -16,7 +17,7 @@ public class UserDrugQuantity {
     @GeneratedValue
     private Long id;
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "drug_user_id")
+    @JoinColumn(name = "user_drug_id")
     private UserDrug userDrug;
     private Integer quantity;
     private LocalDate expirationDate;

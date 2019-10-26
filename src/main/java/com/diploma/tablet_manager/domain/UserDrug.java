@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_drug")
+@Table(name = "user_drug", uniqueConstraints = @UniqueConstraint(name = "user_drug_unique_constraint", columnNames = {"drug_id", "user_id"}))
 @Data
 @EqualsAndHashCode(exclude = "quantityList")
 @ToString(exclude = "quantityList")
@@ -23,7 +23,7 @@ public class UserDrug {
     private Drug drug;
     @ManyToOne
     private User user;
-    @OneToMany(mappedBy = "userDrug", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userDrug")
     private Set<UserDrugQuantity> quantityList;
 
     public UserDrug(Drug drug, User user) {
