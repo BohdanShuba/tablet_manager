@@ -7,14 +7,16 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-Login page
-<form action="/login" method="post">
-    <div><label> User Name : <input type="text" name="login"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<a href="/registration">Add new user</a>
+<div class="container">
+    Login page
+    <form action="/login" method="post">
+        <div><label> User Name : <input type="text" name="login"/> </label></div>
+        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+    <a href="/registration">Add new user</a>
+</div>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.16.0/dist/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
