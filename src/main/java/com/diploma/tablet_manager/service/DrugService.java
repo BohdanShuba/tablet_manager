@@ -1,16 +1,26 @@
 package com.diploma.tablet_manager.service;
 
 import com.diploma.tablet_manager.domain.Drug;
+import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.dto.DrugDto;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DrugService {
 
     List<Drug> getAllDrugs();
+
     Drug addNewDrug(DrugDto drugDto);
+
     List<Drug> findByNameDrugs(String filter);
+
     Page<Drug> getPageDrugs(int page, int limit);
-    Drug findByIdDrug (Integer id);
+
+    Drug findByIdDrug(Integer id);
+
+    void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
+
+    List<UserDrug> getAllDrugsForUser();
 }

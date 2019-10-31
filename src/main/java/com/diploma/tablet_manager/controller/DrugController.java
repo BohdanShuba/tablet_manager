@@ -1,6 +1,7 @@
 package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.Drug;
+import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.dto.PageDto;
 import com.diploma.tablet_manager.dto.UserDrugDto;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
@@ -30,9 +31,17 @@ public class DrugController {
         drugServiceImpl.addDrugToUser(userDrugDto.getDrugId(), userDrugDto.getQuantity(), userDrugDto.getExpirationDate());
         return "main";
     }
-    @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
-        return "greeting";
+
+    @GetMapping("/home")
+    public String getAllDrugForUser(Map<String, Object> model) {
+        try {
+        List <UserDrug> response = drugServiceImpl.getAllDrugsForUser();
+        model.put("drugForUser",response);
+            log.debug("drugForUser response: " + response);
+        } catch (Exception e) {
+            log.error("Cannot obtain drugForUser", e);
+        }
+        return "home";
     }
 
     @GetMapping("/main")

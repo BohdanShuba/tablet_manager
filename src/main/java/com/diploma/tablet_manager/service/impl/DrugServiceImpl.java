@@ -61,15 +61,13 @@ public class DrugServiceImpl implements DrugService {
         return Collections.emptyList();
     }
 
+    @Override
     @Transactional
     public void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate) {
         User currentUser = userServiceImpl.getCurrentUser();
         Drug currentDrug = findByIdDrug(id);
-
         UserDrugQuantity userDrugQuantity;
-
         UserDrug currentUserDrug = getUserDrug(currentUser.getId(), currentDrug.getId());
-
         if (currentUserDrug == null) {
             UserDrug userDrug = new UserDrug(currentDrug, currentUser);
             userDrugQuantity = new UserDrugQuantity(userDrug, quantity, expirationDate);
@@ -86,18 +84,11 @@ public class DrugServiceImpl implements DrugService {
         userDrugQuantityRepository.save(userDrugQuantity);
     }
 
-    private UserDrugQuantity getUserDrugQuantityByDate(Set<UserDrugQuantity> userDrugQuantityGroup, LocalDate expirationDate) {
-        for (UserDrugQuantity i : userDrugQuantityGroup) {
-            if (expirationDate.equals(i.getExpirationDate())) {
-                return i;
-            }
-        }
-        return null;
-    }
-
-    public UserDrug getUserDrug(Integer userId, Integer drugId) {
-        UserDrug userDrug = userDrugRepository.findByUserIdAndDrugId(userId, drugId);
-        return userDrug;
+    @Override
+    public List<UserDrug> getAllDrugsForUser() {
+        User currentUser = userServiceImpl.getCurrentUser();
+        List<UserDrug> userDrugs = userDrugRepository.findByUserId(currentUser.getId());
+        return userDrugs;
     }
 
     public List<PageDto> getPagesNumbers(Page<Drug> page) {
@@ -109,4 +100,19 @@ public class DrugServiceImpl implements DrugService {
         }
         return listPageDto;
     }
+
+    private UserDrugQuantity getUserDrugQuantityByDate(Set<UserDrugQuantity> userDrugQuantityGroup, LocalDate expirationDate) {
+        for (UserDrugQuantity i : userDrugQuantityGroup) {
+            if (expirationDate.equals(i.getExpirationDate())) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    private UserDrug getUserDrug(Integer userId, Integer drugId) {
+        UserDrug userDrug = userDrugRepository.findByUserIdAndDrugId(userId, drugId);
+        return userDrug;
+    }
+
 }

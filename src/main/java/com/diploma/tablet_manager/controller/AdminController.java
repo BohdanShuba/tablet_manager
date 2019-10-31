@@ -22,13 +22,13 @@ public class AdminController {
 
     private final DrugService drugServiceImpl;
 
-    @GetMapping("/adm")
+    @GetMapping("/administration")
     public String adm(Map<String, Object> model) {
-        return "admpage";
+        return "administrationPage";
     }
 
 
-    @PostMapping("/adm")
+    @PostMapping("/administration")
     public String add(@ModelAttribute DrugDto drugDto, Map<String, Object> model) {
         try {
             log.info("Add drug. Drug: " + drugDto);
@@ -39,7 +39,7 @@ public class AdminController {
         } catch (Exception e) {
             log.error("Cannot add drug", e);
         }
-        return "admpage";
+        return "administrationPage";
     }
 
 }

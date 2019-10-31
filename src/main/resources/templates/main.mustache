@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
             <ul class="navbar-nav mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="">Home</a>
+                    <a class="nav-link" href="/home">Home</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/main">Список таблеток<span class="sr-only">(current)</span></a>
@@ -41,9 +41,9 @@
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
-    <!-- КОСТИЛЬ для показать оп'ять-->
+
     <form method="get" action="main">
-        <button class="btn btn-primary" type="submit">Show all</button><!-- КОСТИЛЬ для показать оп'ять-->
+        <button class="btn btn-primary" type="submit">Show all</button>
     </form>
 
     <table class="table table-striped">
