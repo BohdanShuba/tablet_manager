@@ -17,8 +17,8 @@
     <div>{{name}}</div>
     <div>
         <form method="post" action="/drug/user/add">
-            <input type="number" name="quantity" placeholder="Введите количество"/>
-            <input type="date" name="expirationDate" placeholder="Введите дату"/>
+            <input type="number" min="0" required name="quantity" placeholder="Введите количество"/>
+            <input type="date" required name="expirationDate" placeholder="Введите дату"/>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <button name="drugId" value={{id}} class="btn btn-primary" type="submit">Add</button>
         </form>
