@@ -51,11 +51,28 @@
                      data-parent="#accordionExample">
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            {{#quantityList}}
-                                <li>
-                                    {{expirationDate}} - {{quantity}}
-                                </li>
-                            {{/quantityList}}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Количество</th>
+                                    <th scope="col">Срок годности</th>
+                                    <th scope="col">Действие</th>
+                                </tr>
+                                </thead>
+                                {{#quantityList}}
+                                    <tbody>
+                                    <tr>
+                                        <td>{{quantity}}</td>
+                                        <td>{{expirationDate}}</td>
+                                        <td>
+                                            <input type="number" max="quantity" required name="quantity" placeholder="Использлвано"/>
+                                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                            <button name="drugId" value={{id}} class="btn btn-primary" type="submit">Применить</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                {{/quantityList}}
+                            </table>
                         </ul>
                     </div>
                 </div>
