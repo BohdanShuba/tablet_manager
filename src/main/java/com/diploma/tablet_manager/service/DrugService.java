@@ -2,6 +2,7 @@ package com.diploma.tablet_manager.service;
 
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
+import com.diploma.tablet_manager.domain.UserDrugQuantity;
 import com.diploma.tablet_manager.dto.DrugDto;
 import org.springframework.data.domain.Page;
 
@@ -23,4 +24,8 @@ public interface DrugService {
     void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
 
     List<UserDrug> getAllDrugsForUser();
+
+    UserDrugQuantity getUserDrugQuantityById(Integer id);
+
+    void changeQuantity(UserDrugQuantity userDrugQuantity, Integer newDrugCount);
 }

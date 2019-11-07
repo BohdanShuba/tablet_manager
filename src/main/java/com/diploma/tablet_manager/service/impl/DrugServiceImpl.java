@@ -91,6 +91,18 @@ public class DrugServiceImpl implements DrugService {
         return userDrugs;
     }
 
+    @Override
+    public UserDrugQuantity getUserDrugQuantityById(Integer id) {
+        UserDrugQuantity userDrugQuantity = userDrugQuantityRepository.findById(id);
+        return userDrugQuantity;
+    }
+
+    @Override
+    public void changeQuantity(UserDrugQuantity userDrugQuantity, Integer newDrugCount) {
+        userDrugQuantity.setQuantity(userDrugQuantity.getQuantity() - newDrugCount);
+        userDrugQuantityRepository.save(userDrugQuantity);
+    }
+
     public List<PageDto> getPagesNumbers(Page<Drug> page) {
         List<PageDto> listPageDto = new ArrayList<>();
         int countPage = 0;
@@ -114,5 +126,4 @@ public class DrugServiceImpl implements DrugService {
         UserDrug userDrug = userDrugRepository.findByUserIdAndDrugId(userId, drugId);
         return userDrug;
     }
-
 }

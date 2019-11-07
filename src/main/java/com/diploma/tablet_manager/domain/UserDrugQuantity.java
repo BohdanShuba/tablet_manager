@@ -15,7 +15,7 @@ public class UserDrugQuantity {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_drug_id")
     private UserDrug userDrug;

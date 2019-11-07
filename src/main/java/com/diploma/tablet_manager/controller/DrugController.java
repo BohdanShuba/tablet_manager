@@ -2,6 +2,7 @@ package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
+import com.diploma.tablet_manager.domain.UserDrugQuantity;
 import com.diploma.tablet_manager.dto.PageDto;
 import com.diploma.tablet_manager.dto.UserDrugDto;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
@@ -32,11 +33,18 @@ public class DrugController {
         return "main";
     }
 
+    @PostMapping("/drug/user/take")
+    public String takeDrugUser(@RequestParam Integer quantityDrugTaken, Integer userDrugQuantityId, Map<String, Object> model) {
+        UserDrugQuantity userDrugQuantity = drugServiceImpl.getUserDrugQuantityById(userDrugQuantityId);
+        drugServiceImpl.changeQuantity(userDrugQuantity, quantityDrugTaken);
+        return "redirect:/home";
+    }
+
     @GetMapping("/home")
     public String getAllDrugForUser(Map<String, Object> model) {
         try {
-        List <UserDrug> response = drugServiceImpl.getAllDrugsForUser();
-        model.put("drugForUser",response);
+            List<UserDrug> response = drugServiceImpl.getAllDrugsForUser();
+            model.put("drugForUser", response);
             log.debug("drugForUser response: " + response);
         } catch (Exception e) {
             log.error("Cannot obtain drugForUser", e);
