@@ -9,11 +9,18 @@
 <body>
 Add new user
 <form action="/registration/add" method="post">
-    <div><label> User Name : <input type="text" name="login"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><label> Логин: <input type="text" name="login"/> </label></div>
+    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+    <div><label> Email: <input type="text" name="email"/> </label></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Регистрация"/></div>
 </form>
+
+<div>
+    {{#message}}
+        <b>{{message}}</b>
+    {{/message}}
+</div>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.16.0/dist/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
