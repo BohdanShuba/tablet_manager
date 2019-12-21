@@ -2,7 +2,7 @@ package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.Role;
 import com.diploma.tablet_manager.domain.User;
-import com.diploma.tablet_manager.dto.LoginDto;
+import com.diploma.tablet_manager.dto.UserDto;
 import com.diploma.tablet_manager.repos.UserRepository;
 import com.diploma.tablet_manager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLogin(login);
     }
 
+    @Override
+    public User findUserByLoginOrEmail(String login, String email) {
+        return userRepository.findByLoginOrEmail(login, email);
+    }
+
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
@@ -34,8 +40,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addNewUser(LoginDto loginDto) {
-        User user = new User(loginDto.getLogin(), passwordEncoder.encode(loginDto.getPassword()));
+    public User addNewUser(UserDto userDto) {
+        User user = new User(userDto.getLogin(), passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
         user.setEnabled(true);
         user.setRole(Collections.singleton(Role.USER));
         return userRepository.saveAndFlush(user);

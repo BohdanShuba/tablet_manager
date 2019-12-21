@@ -1,7 +1,7 @@
 package com.diploma.tablet_manager.controller;
 
 import com.diploma.tablet_manager.domain.User;
-import com.diploma.tablet_manager.dto.LoginDto;
+import com.diploma.tablet_manager.dto.UserDto;
 import com.diploma.tablet_manager.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,14 +18,14 @@ public class RegistrationController {
     private final UserServiceImpl userServiceImpl;
 
     @PostMapping("/add")
-    public String addUser(LoginDto loginDto, Map<String, Object> model) {
-        User userFromDb = userServiceImpl.findUserByLogin(loginDto.getLogin());
+    public String addUser(UserDto userDto, Map<String, Object> model) {
+        User userFromDb = userServiceImpl.findUserByLoginOrEmail(userDto.getLogin(), userDto.getEmail());
 
         if (userFromDb != null) {
-            model.put("drugs", "User exists!");
+            model.put("message", "Логин или почта уже используются");
             return "registration";
         }
-        userServiceImpl.addNewUser(loginDto);
+        userServiceImpl.addNewUser(userDto);
         return "redirect:/login";
     }
 }
