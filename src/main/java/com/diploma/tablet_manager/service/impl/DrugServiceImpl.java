@@ -8,6 +8,7 @@ import com.diploma.tablet_manager.repos.DrugRepository;
 import com.diploma.tablet_manager.repos.UserDrugQuantityRepository;
 import com.diploma.tablet_manager.repos.UserDrugRepository;
 import com.diploma.tablet_manager.service.DrugService;
+import com.diploma.tablet_manager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,7 @@ public class DrugServiceImpl implements DrugService {
     private final ClassificationRepository classificationRepository;
     private final UserDrugQuantityRepository userDrugQuantityRepository;
     private final UserDrugRepository userDrugRepository;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -64,7 +65,7 @@ public class DrugServiceImpl implements DrugService {
     @Override
     @Transactional
     public void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate) {
-        User currentUser = userServiceImpl.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         Drug currentDrug = findByIdDrug(id);
         UserDrugQuantity userDrugQuantity;
         UserDrug currentUserDrug = getUserDrug(currentUser.getId(), currentDrug.getId());
@@ -86,7 +87,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public List<UserDrug> getAllDrugsForUser() {
-        User currentUser = userServiceImpl.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         List<UserDrug> userDrugs = userDrugRepository.findByUserId(currentUser.getId());
         return userDrugs;
     }

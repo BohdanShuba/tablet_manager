@@ -22,6 +22,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     private final UserService userService;
 
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -31,7 +32,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         }
         Set<GrantedAuthority> roles = new HashSet<>();
         for (Role role : user.getRole()) {
-            roles.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+                roles.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
         }
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), roles);
     }
