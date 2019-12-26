@@ -27,7 +27,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("tableton.service@gmail.com");
         mailMessage.setText("To confirm your account, please click here : "
-                + "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken());
+                + "http://localhost:8080/registration/confirm-account?token=" + confirmationToken.getConfirmationToken());
         return mailMessage;
     }
 
