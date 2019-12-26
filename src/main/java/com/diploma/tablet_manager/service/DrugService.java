@@ -10,22 +10,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface DrugService {
-
     List<Drug> getAllDrugs();
-
     Drug addNewDrug(DrugDto drugDto);
-
     List<Drug> findByNameDrugs(String filter);
-
     Page<Drug> getPageDrugs(int page, int limit);
-
     Drug findByIdDrug(Integer id);
-
     void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
-
     List<UserDrug> getAllDrugsForUser();
-
     UserDrugQuantity getUserDrugQuantityById(Integer id);
-
     void changeQuantity(UserDrugQuantity userDrugQuantity, Integer newDrugCount);
 }
