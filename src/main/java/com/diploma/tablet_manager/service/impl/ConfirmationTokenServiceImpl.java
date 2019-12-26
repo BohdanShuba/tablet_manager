@@ -29,6 +29,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
             User user = userRepository.findByLogin(token.getUser().getLogin());
             user.setEnabled(true);
             userRepository.save(user);
+            confirmationTokenRepository.delete(token);
             return "Аккаунт подтвержден";
         } else return "Ссылка неверна или не работает";
 
