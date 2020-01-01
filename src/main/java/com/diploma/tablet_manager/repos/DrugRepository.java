@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface DrugRepository extends JpaRepository<Drug, Long> {
     List<Drug> findByName(String name);
+
     Drug findById(Integer id);
 }
