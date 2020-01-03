@@ -2,6 +2,7 @@ package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.repos.UserDrugRepository;
+import com.diploma.tablet_manager.service.EmailSenderService;
 import com.diploma.tablet_manager.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,21 +14,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SchedulerServiceImpl implements SchedulerService {
-    private final UserDrugRepository userDrugRepository;
-//    private static final String CRON = "20 * * * *";
-//    private final UserRepository userRepository;
+
+    private final EmailSenderService emailSenderService;
+//    private static final String CRON = "0 0 6 * * ?";
 
     //    @Scheduled(cron = CRON)
-//    public void sendMailToUsers() {
-//        LocalDate date = LocalDate.now();
-//        userRepository.findByLogin("user1");
-//    }
+
     @Scheduled(fixedRate = 1000)
     public void sendMailToUsers() {
-        LocalDate date = LocalDate.now();
-        List<UserDrug> uds = userDrugRepository.findAllByExpirationDate(date);
-        for (UserDrug usdr : uds) {
-            System.out.println(usdr.getUser().getEmail() + " " + usdr.getDrug().getName());
-        }
+        emailSenderService.sendExpirationEmail();
     }
 }
