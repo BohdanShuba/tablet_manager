@@ -7,10 +7,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface UserDrugRepository extends JpaRepository<UserDrug, Long> {
-    @Query(value = "SELECT * FROM user\n" +
-            "JOIN user_drug on user.id = user_drug.user_id\n" +
+    @Query(value = "SELECT DISTINCT * FROM user_drug\n" +
+            "JOIN user on user.id = user_drug.user_id\n" +
             "JOIN drug on drug.id = user_drug.drug_id\n" +
             "JOIN user_drug_quantity on user_drug.id = user_drug_quantity.user_drug_id\n" +
             "WHERE user_drug_quantity.expiration_date = :date", nativeQuery = true)
