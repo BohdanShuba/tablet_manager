@@ -14,13 +14,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SchedulerServiceImpl implements SchedulerService {
-
     private final EmailSenderService emailSenderService;
-//    private static final String CRON = "0 0 6 * * ?";
+    private static final String CRON = "0 /5 * * * ?";
 
-    //    @Scheduled(cron = CRON)
+    //@Scheduled(cron = CRON)
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1000*60)
     public void sendMailToUsers() {
         emailSenderService.sendExpirationEmail();
     }

@@ -1,7 +1,6 @@
 package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.ConfirmationToken;
-import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.dto.EmailMessageDto;
 import com.diploma.tablet_manager.repos.UserDrugRepository;
@@ -11,9 +10,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.midi.Soundbank;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,25 +24,35 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final JavaMailSender javaMailSender;
 
     @Override
+    @Transactional(readOnly = true)
     @Async
     public void sendExpirationEmail() {
         LocalDate date = LocalDate.now();
         LocalDate tomorrowsDate = date.plusDays(1);
         List<UserDrug> userDrugs = userDrugRepository.findAllByExpirationDate(tomorrowsDate);
-        for (UserDrug userDrug : userDrugs) {
-            StringBuffer drugs = getExpiredUserDrugs(userDrug.getUser().getLogin(), userDrugs);
-            EmailMessageDto emailMessageDto = createExpirationEmail(userDrug.getUser().getEmail(), drugs.toString(), tomorrowsDate);
+        Set<String> uniqueUserEmails = getUniqueUserEmails(userDrugs);
+        for (String uniqueEmail : uniqueUserEmails) {
+            StringBuffer drugs = getExpiredUserDrugs(uniqueEmail, userDrugs);
+            EmailMessageDto emailMessageDto = createExpirationEmail(uniqueEmail, drugs.toString(), tomorrowsDate);
             SimpleMailMessage email = createSimpleMailMessage(emailMessageDto);
             javaMailSender.send(email);
             System.out.println(emailMessageDto.toString());
         }
     }
 
-    private StringBuffer getExpiredUserDrugs(String userLogin, List<UserDrug> userDrug) {
+    private Set<String> getUniqueUserEmails(List<UserDrug> userDrug) {
+        Set<String> uniqueUsers = new HashSet<>();
+        for (int i = 0; i < userDrug.size(); i++) {
+            uniqueUsers.add(userDrug.get(i).getUser().getEmail());
+        }
+        return uniqueUsers;
+    }
+
+    private StringBuffer getExpiredUserDrugs(String userEmail, List<UserDrug> userDrug) {
         StringBuffer drugs = new StringBuffer();
-        for (int i = 0; i < userDrug.size() - 1; i++) {
-            String login = userDrug.get(i).getUser().getLogin();
-            if (login.equals(userLogin)) {
+        for (int i = 0; i < userDrug.size(); i++) {
+            String email = userDrug.get(i).getUser().getEmail();
+            if (email.equals(userEmail)) {
                 String nameDrug = userDrug.get(i).getDrug().getName();
                 drugs.append(nameDrug);
                 drugs.append(", ");
