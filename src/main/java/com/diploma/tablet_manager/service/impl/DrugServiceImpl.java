@@ -43,6 +43,11 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
+    public Page<Drug> getPageDrugsClassification (int id, int page, int limit) {
+        return drugRepository.findAllByClassificationId(id, PageRequest.of(page, limit, Sort.Direction.ASC, "name"));
+    }
+
+    @Override
     public Drug addNewDrug(DrugDto drugDto) {
         Classification classification = classificationRepository.findAllById(drugDto.getClassificationId());
         Drug drug = new Drug(drugDto.getName(), drugDto.getInstruction(), classification);
@@ -52,6 +57,11 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public Drug findByIdDrug(Integer idDrug) {
         return drugRepository.findById(idDrug);
+    }
+
+    @Override
+    public List<Classification> getAllClassifications() {
+        return classificationRepository.findAll();
     }
 
     @Override

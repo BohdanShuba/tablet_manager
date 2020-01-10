@@ -1,5 +1,6 @@
 package com.diploma.tablet_manager.service;
 
+import com.diploma.tablet_manager.domain.Classification;
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.domain.UserDrugQuantity;
@@ -18,7 +19,11 @@ public interface DrugService {
 
     Page<Drug> getPageDrugs(int page, int limit);
 
+    Page<Drug> getPageDrugsClassification (int id, int page, int limit);
+
     Drug findByIdDrug(Integer id);
+
+    List<Classification> getAllClassifications();
 
     void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
 
