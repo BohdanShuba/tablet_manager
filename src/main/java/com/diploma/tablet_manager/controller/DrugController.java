@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,18 +19,19 @@ import java.util.Optional;
 
 @Log4j2
 @Controller
+@RequestMapping("/drug/user")
 @RequiredArgsConstructor
 public class DrugController {
 
     private final DrugServiceImpl drugServiceImpl;
 
-    @PostMapping("/drug/user/add")
+    @PostMapping("add")
     public String addDrugUser(@ModelAttribute UserDrugDto userDrugDto, Map<String, Object> model) {
         drugServiceImpl.addDrugToUser(userDrugDto.getDrugId(), userDrugDto.getQuantity(), userDrugDto.getExpirationDate());
         return "main";
     }
 
-    @PostMapping("/drug/user/take")
+    @PostMapping("take")
     public String takeDrugUser(@RequestParam Integer quantityDrugTaken, Integer userDrugQuantityId, Map<String, Object> model) {
         UserDrugQuantity userDrugQuantity = drugServiceImpl.getUserDrugQuantityById(userDrugQuantityId);
         drugServiceImpl.changeQuantity(userDrugQuantity, quantityDrugTaken);
@@ -75,7 +73,7 @@ public class DrugController {
         return "addUserDrug";
     }
 
-    @PostMapping("filter")
+    @PostMapping("/filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {
         try {
             List<Drug> response = drugServiceImpl.findByNameDrugs(filter);
@@ -84,7 +82,7 @@ public class DrugController {
         } catch (Exception e) {
             log.error("Cannot obtain drugs", e);
         }
-        return "main";
+        return "filteredDrugs";
     }
 }
 
