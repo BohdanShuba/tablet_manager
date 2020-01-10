@@ -20,10 +20,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
             <ul class="navbar-nav mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/home">Home</a>
+                    <a class="nav-link" href="/drug/user/home">Гланая</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/main">Список таблеток</a>
+                    <a class="nav-link" href="/drug/user/main">Список таблеток</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/admin/administration">For adminka <span class="sr-only">(current)</span></a>
@@ -36,30 +36,31 @@
         </form>
     </nav>
     <div>Hello, admin
-    <div>
-        <form method="post" name="drugDto">
-            <input type="text" name="name" placeholder="Введите name"/>
-            <input type="text" name="instruction" placeholder="Введите instruction"/>
-            <select type="text" name="classificationId">
-                <option>Вберите classification</option>
-                <option value="1">A</option>
-                <option value="2">B</option>
-                <option value="3">C</option>
-                <option value="4">D</option>
-                <option value="5">G</option>
-                <option value="6">H</option>
-                <option value="7">J</option>
-                <option value="8">L</option>
-                <option value="9">M</option>
-                <option value="10">N</option>
-                <option value="11">P</option>
-                <option value="12">R</option>
-                <option value="13">S</option>
-                <option value="14">V</option>
-            </select>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <button class="btn btn-primary" type="submit">Add</button>
-        </form>
+        <div>
+            <form method="post" name="drugDto">
+                <input type="text" name="name" placeholder="Введите name"/>
+                <input type="text" name="instruction" placeholder="Введите instruction"/>
+                <select type="text" name="classificationId">
+                    <option>Выберите класификацию</option>
+                    <option value="1">A</option>
+                    <option value="2">B</option>
+                    <option value="3">C</option>
+                    <option value="4">D</option>
+                    <option value="5">G</option>
+                    <option value="6">H</option>
+                    <option value="7">J</option>
+                    <option value="8">L</option>
+                    <option value="9">M</option>
+                    <option value="10">N</option>
+                    <option value="11">P</option>
+                    <option value="12">R</option>
+                    <option value="13">S</option>
+                    <option value="14">V</option>
+                </select>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <button class="btn btn-primary" type="submit">Добавить</button>
+            </form>
+        </div>
     </div>
 </div>
 <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>

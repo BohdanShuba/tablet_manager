@@ -20,10 +20,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
             <ul class="navbar-nav mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/home">Home</a>
+                    <a class="nav-link" href="/drug/user/home">Гланая</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/main">Список таблеток<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/drug/user/main">Список таблеток<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/administration">For adminka</a>
@@ -32,38 +32,38 @@
         </div>
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input class="btn btn-danger" type="submit" value="Sign Out"/>
+            <input class="btn btn-danger" type="submit" value="Выход"/>
         </form>
     </nav>
     <div>Список</div>
-    <form method="post" action="filter">
+    <form method="post" action="/drug/user/filter">
         <input type="name" name="filter">
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button class="btn btn-primary" type="submit">Search</button>
+        <button class="btn btn-primary" type="submit">Найти</button>
     </form>
 
     <form method="get" action="main">
-        <button class="btn btn-primary" type="submit">Show all</button>
+        <button class="btn btn-primary" type="submit">Показать все</button>
     </form>
 
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Instruction</th>
-            <th>Actions</th>
+            <th>Название</th>
+            <th>Инструкция</th>
+            <th>Действие</th>
         </tr>
         </thead>
         <tbody>
         {{#page}}
             <tr>
                 <td>{{name}}</td>
-                <td><a href="{{instruction}}">instruction</a></td>
-                <form action="/addr">
+                <td><a href="{{instruction}}">инструкция</a></td>
+                <form action="/drug/user/addr">
                     <input type="hidden" name="name" value={{name}}>
                     <input type="hidden" name="id" value={{id}}>
                     <td>
-                        <button class="btn btn-primary" type="submit">add</button>
+                        <button class="btn btn-primary" type="submit">добавить</button>
                     </td>
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/></form>
             </tr>
