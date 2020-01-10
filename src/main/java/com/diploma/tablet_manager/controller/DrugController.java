@@ -1,5 +1,6 @@
 package com.diploma.tablet_manager.controller;
 
+import com.diploma.tablet_manager.domain.Classification;
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.domain.UserDrugQuantity;
@@ -35,7 +36,7 @@ public class DrugController {
     public String takeDrugUser(@RequestParam Integer quantityDrugTaken, Integer userDrugQuantityId, Map<String, Object> model) {
         UserDrugQuantity userDrugQuantity = drugServiceImpl.getUserDrugQuantityById(userDrugQuantityId);
         drugServiceImpl.changeQuantity(userDrugQuantity, quantityDrugTaken);
-        return "redirect:/home";
+        return "redirect:/drug/user/home";
     }
 
     @GetMapping("/home")
@@ -66,12 +67,30 @@ public class DrugController {
         return "main";
     }
 
+    @GetMapping("classification")
+    public String getClassification(Map<String, Object> model) {
+        List<Classification> response = drugServiceImpl.getAllClassifications();
+        model.put("classification", response);
+        return "drugClassification";
+    }
+
+    @GetMapping("drugs-classification")
+    public String getDrugsClassification(Integer page, Integer limit,@RequestParam Integer id, Map<String, Object> model) {
+        log.info("Classification request. Classification id " + id + " Page:" + page + ", limit: " + limit);
+        Page<Drug> response = drugServiceImpl.getPageDrugsClassification(id, Optional.ofNullable(page).orElse(0), Optional.ofNullable(limit).orElse(10));
+        List<PageDto> pageDto = drugServiceImpl.getPagesNumbers(response);
+        model.put("page", response);
+        model.put("pageDto", pageDto);
+        return "main";
+    }
+
     @GetMapping("/addr")
     public String addDrugUser(@RequestParam String name, Integer id, Map<String, Object> model) {
         model.put("id", id);
         model.put("name", name);
         return "addUserDrug";
     }
+
 
     @PostMapping("/filter")
     public String filter(@RequestParam String filter, Map<String, Object> model) {
