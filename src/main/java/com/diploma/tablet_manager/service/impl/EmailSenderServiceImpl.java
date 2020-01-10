@@ -12,9 +12,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.Soundbank;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             StringBuffer drugs = getExpiredUserDrugs(uniqueEmail, userDrugs);
             EmailMessageDto emailMessageDto = createExpirationEmail(uniqueEmail, drugs.toString(), tomorrowsDate);
             SimpleMailMessage email = createSimpleMailMessage(emailMessageDto);
-            javaMailSender.send(email);
+            //javaMailSender.send(email);
             System.out.println(emailMessageDto.toString());
         }
     }

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 public interface UserDrugRepository extends JpaRepository<UserDrug, Long> {
     @Query(value = "SELECT DISTINCT * FROM user_drug\n" +
