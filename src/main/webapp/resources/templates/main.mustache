@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
                 aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,27 +28,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/administration">For adminka</a>
                 </li>
+                <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                        <input class="btn btn-danger" type="submit" value="Выход"/>
+                    </form>
+                </li>
             </ul>
         </div>
-        <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input class="btn btn-danger" type="submit" value="Выход"/>
-        </form>
     </nav>
-    <div>Список</div>
-    <form method="post" action="/drug/user/filter">
-        <input type="name" name="filter">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button class="btn btn-primary" type="submit">Найти</button>
-    </form>
-
-    <form method="get" action="main">
-        <button class="btn btn-primary" type="submit">Показать все</button>
-    </form>
 
     <form method="get" action="classification">
-        <button class="btn btn-primary" type="submit">Класификация по назначению</button>
+        <button class="btn btn-primary float-right mb-2" type="submit">Класификация по назначению</button>
     </form>
+
+    <div class="form-inline mb-2" role="group">
+        <form method="post" action="/drug/user/filter">
+            <input class="form-control" type="name" name="filter">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button class="btn btn-primary mr-3" type="submit">Найти</button>
+        </form>
+        <form method="get" action="main">
+            <button class="btn btn-primary" type="submit">Показать все</button>
+        </form>
+    </div>
 
     <table class="table table-striped">
         <thead>
@@ -67,7 +70,7 @@
                     <input type="hidden" name="name" value={{name}}>
                     <input type="hidden" name="id" value={{id}}>
                     <td>
-                        <button class="btn btn-primary" type="submit">добавить</button>
+                        <button class="btn btn-outline-primary btn-sm" type="submit">добавить</button>
                     </td>
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/></form>
             </tr>
@@ -76,11 +79,11 @@
     </table>
     <!-- ПАГІНАТОР-->
     <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Страницы</a>
-                    </li>
-                    {{#pageDto}}
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Страницы</a>
+            </li>
+            {{#pageDto}}
                 <li class="page-item"><a class="page-link" href="{{url}}">{{number}}</a></li>
             {{/pageDto}}
         </ul>

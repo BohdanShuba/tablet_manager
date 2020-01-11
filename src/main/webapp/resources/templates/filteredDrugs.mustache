@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
                 aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,23 +28,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/administration">For adminka</a>
                 </li>
+                <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                        <input class="btn btn-danger" type="submit" value="Выход"/>
+                    </form>
+                </li>
             </ul>
         </div>
-        <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input class="btn btn-danger" type="submit" value="Sign Out"/>
-        </form>
     </nav>
 
-    <form method="post" action="/drug/user/filter">
-        <input type="name" name="filter">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button class="btn btn-primary" type="submit">Найти</button>
+    <form method="get" action="classification">
+        <button class="btn btn-primary float-right mb-2" type="submit">Класификация по назначению</button>
     </form>
 
-    <form method="get" action="main">
-        <button class="btn btn-primary" type="submit">Показать все</button>
-    </form>
+    <div class="form-inline mb-2" role="group">
+        <form method="post" action="/drug/user/filter">
+            <input class="form-control" type="name" name="filter">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+            <button class="btn btn-primary mr-3" type="submit">Найти</button>
+        </form>
+        <form method="get" action="main">
+            <button class="btn btn-primary" type="submit">Показать все</button>
+        </form>
+    </div>
 
     <table class="table table-striped">
         <thead>

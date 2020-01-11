@@ -7,26 +7,53 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-Add new user
-<form action="/registration/add" method="post">
-    <div><label> Логин: <input type="text" name="login"/> </label></div>
-    <div><label> Пароль: <input type="password" name="password"/> </label></div>
-    <div><label> Email: <input type="text" name="email"/> </label></div>
-    <input type="reset" value="Очистить"/>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <div><input type="submit" value="Регистрация"/></div>
-</form>
+<div class="container">
 
-<div>
-    {{#message}}
-        <b>{{message}}</b>
-    {{/message}}
-</div>
-<div>
-    После успешной регистрации, проверьте Ваш электронный ящик и перейдите по ссылке для активации аккаунта
-</div>
-<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-<script src="/webjars/popper.js/1.16.0/dist/umd/popper.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <div class="d-flex justify-content-center">
+        <div class="form mt-4" style="width: 300px">
+            <form action="/registration/add" method="post">
+
+
+                <div class="form-group">
+                    <label for="inputLogin">Логин</label>
+                    <input type="text" class="form-control" name="login" id="inputLogin"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword">Пароль</label>
+                    <input type="password" class="form-control" name="password" id="inputPassword"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="text" class="form-control" name="email" id="inputEmail"/>
+                </div>
+
+                <div class="form-group">
+                    <a href="/login" class="btn btn-outline-primary">Назад</a>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <button type="submit" class="btn btn-primary float-right">Регистрация</button>
+                </div>
+
+            </form>
+
+            {{#message}}
+                <div class="alert alert-danger">
+                    <b>{{message}}</b>
+                </div>
+            {{/message}}
+
+
+            <div class="alert alert-primary" role="alert">
+                После успешной регистрации, проверьте Ваш электронный ящик и перейдите по ссылке для активации аккаунта
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/webjars/popper.js/1.16.0/dist/umd/popper.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
