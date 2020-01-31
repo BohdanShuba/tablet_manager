@@ -5,7 +5,7 @@ import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.domain.UserDrugQuantity;
 import com.diploma.tablet_manager.dto.PageDto;
-import com.diploma.tablet_manager.dto.UserDrugDto;
+import com.diploma.tablet_manager.dto.UserDrugQuantityDto;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,8 +27,8 @@ public class DrugController {
     private final DrugServiceImpl drugServiceImpl;
 
     @PostMapping("add")
-    public String addDrugUser(@ModelAttribute UserDrugDto userDrugDto, Map<String, Object> model) {
-        drugServiceImpl.addDrugToUser(userDrugDto.getDrugId(), userDrugDto.getQuantity(), userDrugDto.getExpirationDate());
+    public String addDrugUser(@ModelAttribute UserDrugQuantityDto userDrugQuantityDto, Map<String, Object> model) {
+        drugServiceImpl.addDrugToUser(userDrugQuantityDto.getDrugId(), userDrugQuantityDto.getQuantity(), userDrugQuantityDto.getExpirationDate());
         return "main";
     }
 
@@ -75,7 +75,7 @@ public class DrugController {
     }
 
     @GetMapping("drugs-classification")
-    public String getDrugsClassification(Integer page, Integer limit,@RequestParam Integer id, Map<String, Object> model) {
+    public String getDrugsClassification(Integer page, Integer limit, @RequestParam Integer id, Map<String, Object> model) {
         log.info("Classification request. Classification id " + id + " Page:" + page + ", limit: " + limit);
         Page<Drug> response = drugServiceImpl.getPageDrugsClassification(id, Optional.ofNullable(page).orElse(0), Optional.ofNullable(limit).orElse(10));
         List<PageDto> pageDto = drugServiceImpl.getPagesNumbers(response);
