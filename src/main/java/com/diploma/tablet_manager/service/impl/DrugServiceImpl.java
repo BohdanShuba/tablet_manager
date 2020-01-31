@@ -1,8 +1,10 @@
 package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.*;
+import com.diploma.tablet_manager.mapper.Mapper;
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.PageDto;
+import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
 import com.diploma.tablet_manager.repos.ClassificationRepository;
 import com.diploma.tablet_manager.repos.DrugRepository;
 import com.diploma.tablet_manager.repos.UserDrugQuantityRepository;
@@ -17,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +30,8 @@ public class DrugServiceImpl implements DrugService {
     private final UserDrugQuantityRepository userDrugQuantityRepository;
     private final UserDrugRepository userDrugRepository;
     private final UserService userService;
+
+    Mapper mapper = new Mapper();
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -43,7 +44,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public Page<Drug> getPageDrugsClassification (int id, int page, int limit) {
+    public Page<Drug> getPageDrugsClassification(int id, int page, int limit) {
         return drugRepository.findAllByClassificationId(id, PageRequest.of(page, limit, Sort.Direction.ASC, "name"));
     }
 
@@ -96,11 +97,16 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public List<UserDrug> getAllDrugsForUser() {
+    public List<UserDrugWithQuantityDto> getAllDrugsForUser() {
         User currentUser = userService.getCurrentUser();
         List<UserDrug> userDrugs = userDrugRepository.findByUserId(currentUser.getId());
-        return userDrugs;
+        List<UserDrugWithQuantityDto> userDrugWithQuantityDtoGroup = new LinkedList<>();
+        for (UserDrug userDrug : userDrugs) {
+            userDrugWithQuantityDtoGroup.add(mapper.toDto(userDrug));
+        }
+        return userDrugWithQuantityDtoGroup;
     }
+
 
     @Override
     public UserDrugQuantity getUserDrugQuantityById(Integer id) {
