@@ -4,6 +4,7 @@ import com.diploma.tablet_manager.domain.Classification;
 import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.domain.UserDrugQuantity;
+import com.diploma.tablet_manager.dto.ClassificationDto;
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ public interface DrugService {
 
     Drug addNewDrug(DrugDto drugDto);
 
-    List<Drug> findByNameDrugs(String filter);
+    List<DrugDto> findByNameDrugs(String filter);
 
     Page<Drug> getPageDrugs(int page, int limit);
 
@@ -24,7 +25,7 @@ public interface DrugService {
 
     Drug findByIdDrug(Integer id);
 
-    List<Classification> getAllClassifications();
+    List<ClassificationDto> getAllClassifications();
 
     void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
 
@@ -32,5 +33,5 @@ public interface DrugService {
 
     UserDrugQuantity getUserDrugQuantityById(Integer id);
 
-    void changeQuantity(UserDrugQuantity userDrugQuantity, Integer newDrugCount);
+    void changeQuantity(Integer userDrugQuantityId, Integer newDrugCount);
 }

@@ -1,10 +1,11 @@
 package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.*;
-import com.diploma.tablet_manager.mapper.Mapper;
+import com.diploma.tablet_manager.dto.ClassificationDto;
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.PageDto;
 import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
+import com.diploma.tablet_manager.mapper.Mapper;
 import com.diploma.tablet_manager.repos.ClassificationRepository;
 import com.diploma.tablet_manager.repos.DrugRepository;
 import com.diploma.tablet_manager.repos.UserDrugQuantityRepository;
@@ -30,8 +31,7 @@ public class DrugServiceImpl implements DrugService {
     private final UserDrugQuantityRepository userDrugQuantityRepository;
     private final UserDrugRepository userDrugRepository;
     private final UserService userService;
-
-    Mapper mapper = new Mapper();
+    private final Mapper mapper;
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -61,14 +61,27 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public List<Classification> getAllClassifications() {
-        return classificationRepository.findAll();
+    public List<ClassificationDto> getAllClassifications() {
+        List<ClassificationDto> classificationsDto = new LinkedList<>();
+        List<Classification> classifications = classificationRepository.findAll();
+
+        for (Classification classification : classifications) {
+            classificationsDto.add(mapper.toDto(classification));
+        }
+        //       return mapper.toDtoList(classifications);
+        return classificationsDto;
     }
 
     @Override
-    public List<Drug> findByNameDrugs(String nameDrug) {
+    public List<DrugDto> findByNameDrugs(String nameDrug) {
         if (nameDrug != null && !nameDrug.isEmpty()) {
-            return drugRepository.findByName(nameDrug);
+
+            List<Drug> drugs = drugRepository.findByName(nameDrug);
+            List<DrugDto> drugDtoGroup = new LinkedList<>();
+            for (Drug drug : drugs) {
+                drugDtoGroup.add(mapper.toDto(drug));
+            }
+            return drugDtoGroup;
         }
         return Collections.emptyList();
     }
@@ -104,9 +117,9 @@ public class DrugServiceImpl implements DrugService {
         for (UserDrug userDrug : userDrugs) {
             userDrugWithQuantityDtoGroup.add(mapper.toDto(userDrug));
         }
+        //return mapper.toDtoList(userDrugs);
         return userDrugWithQuantityDtoGroup;
     }
-
 
     @Override
     public UserDrugQuantity getUserDrugQuantityById(Integer id) {
@@ -115,7 +128,8 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public void changeQuantity(UserDrugQuantity userDrugQuantity, Integer newDrugCount) {
+    public void changeQuantity(Integer userDrugQuantityId, Integer newDrugCount) {
+        UserDrugQuantity userDrugQuantity = getUserDrugQuantityById(userDrugQuantityId);
         userDrugQuantity.setQuantity(userDrugQuantity.getQuantity() - newDrugCount);
         userDrugQuantityRepository.save(userDrugQuantity);
     }
