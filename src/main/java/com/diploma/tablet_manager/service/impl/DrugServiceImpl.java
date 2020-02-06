@@ -1,10 +1,7 @@
 package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.*;
-import com.diploma.tablet_manager.dto.ClassificationDto;
-import com.diploma.tablet_manager.dto.DrugDto;
-import com.diploma.tablet_manager.dto.PageDto;
-import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
+import com.diploma.tablet_manager.dto.*;
 import com.diploma.tablet_manager.mapper.Mapper;
 import com.diploma.tablet_manager.repos.ClassificationRepository;
 import com.diploma.tablet_manager.repos.DrugRepository;
@@ -31,7 +28,7 @@ public class DrugServiceImpl implements DrugService {
     private final UserDrugQuantityRepository userDrugQuantityRepository;
     private final UserDrugRepository userDrugRepository;
     private final UserService userService;
-    private final Mapper mapper;
+    private Mapper mapper = new Mapper();
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -49,10 +46,10 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public Drug addNewDrug(DrugDto drugDto) {
+    public DrugDto addNewDrug(DrugDto drugDto) {
         Classification classification = classificationRepository.findAllById(drugDto.getClassificationId());
         Drug drug = new Drug(drugDto.getName(), drugDto.getInstruction(), classification);
-        return drugRepository.save(drug);
+        return mapper.toDto(drugRepository.save(drug));
     }
 
     @Override
@@ -68,7 +65,6 @@ public class DrugServiceImpl implements DrugService {
         for (Classification classification : classifications) {
             classificationsDto.add(mapper.toDto(classification));
         }
-        //       return mapper.toDtoList(classifications);
         return classificationsDto;
     }
 
@@ -88,7 +84,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     @Transactional
-    public void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate) {
+    public DrugQuantityDto addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate) {
         User currentUser = userService.getCurrentUser();
         Drug currentDrug = findByIdDrug(id);
         UserDrugQuantity userDrugQuantity;
@@ -106,7 +102,7 @@ public class DrugServiceImpl implements DrugService {
                 userDrugQuantity.setQuantity(modifiedQuantity);
             }
         }
-        userDrugQuantityRepository.save(userDrugQuantity);
+        return mapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
     }
 
     @Override
@@ -117,7 +113,6 @@ public class DrugServiceImpl implements DrugService {
         for (UserDrug userDrug : userDrugs) {
             userDrugWithQuantityDtoGroup.add(mapper.toDto(userDrug));
         }
-        //return mapper.toDtoList(userDrugs);
         return userDrugWithQuantityDtoGroup;
     }
 
@@ -128,10 +123,10 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public void changeQuantity(Integer userDrugQuantityId, Integer newDrugCount) {
+    public DrugQuantityDto changeQuantity(Integer userDrugQuantityId, Integer newDrugCount) {
         UserDrugQuantity userDrugQuantity = getUserDrugQuantityById(userDrugQuantityId);
         userDrugQuantity.setQuantity(userDrugQuantity.getQuantity() - newDrugCount);
-        userDrugQuantityRepository.save(userDrugQuantity);
+        return mapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
     }
 
     public List<PageDto> getPagesNumbers(Page<Drug> page) {

@@ -1,11 +1,10 @@
 package com.diploma.tablet_manager.service;
 
-import com.diploma.tablet_manager.domain.Classification;
 import com.diploma.tablet_manager.domain.Drug;
-import com.diploma.tablet_manager.domain.UserDrug;
 import com.diploma.tablet_manager.domain.UserDrugQuantity;
 import com.diploma.tablet_manager.dto.ClassificationDto;
 import com.diploma.tablet_manager.dto.DrugDto;
+import com.diploma.tablet_manager.dto.DrugQuantityDto;
 import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
 import org.springframework.data.domain.Page;
 
@@ -15,23 +14,23 @@ import java.util.List;
 public interface DrugService {
     List<Drug> getAllDrugs();
 
-    Drug addNewDrug(DrugDto drugDto);
+    DrugDto addNewDrug(DrugDto drugDto);
 
     List<DrugDto> findByNameDrugs(String filter);
 
     Page<Drug> getPageDrugs(int page, int limit);
 
-    Page<Drug> getPageDrugsClassification (int id, int page, int limit);
+    Page<Drug> getPageDrugsClassification(int id, int page, int limit);
 
     Drug findByIdDrug(Integer id);
 
     List<ClassificationDto> getAllClassifications();
 
-    void addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
+    DrugQuantityDto addDrugToUser(Integer id, Integer quantity, LocalDate expirationDate);
 
     List<UserDrugWithQuantityDto> getAllDrugsForUser();
 
     UserDrugQuantity getUserDrugQuantityById(Integer id);
 
-    void changeQuantity(Integer userDrugQuantityId, Integer newDrugCount);
+    DrugQuantityDto changeQuantity(Integer userDrugQuantityId, Integer newDrugCount);
 }
