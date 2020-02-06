@@ -18,7 +18,9 @@ public class AdminRestController {
 
     @PostMapping
     public DrugDto add(DrugDto drugDto) {
-        log.info("Add drug. Drug: " + drugDto);
-        return drugServiceImpl.addNewDrug(drugDto);
+        log.info("Add drug request: " + drugDto);
+        DrugDto response = drugServiceImpl.addNewDrug(drugDto);
+        log.info("Add drug response: " + response);
+        return response;
     }
 }
