@@ -3,6 +3,7 @@ package com.diploma.tablet_manager.service.impl;
 import com.diploma.tablet_manager.domain.Role;
 import com.diploma.tablet_manager.domain.User;
 import com.diploma.tablet_manager.dto.UserDto;
+import com.diploma.tablet_manager.mapper.Mapper;
 import com.diploma.tablet_manager.repos.UserRepository;
 import com.diploma.tablet_manager.service.ConfirmationTokenService;
 import com.diploma.tablet_manager.service.UserService;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private Mapper mapper = new Mapper();
 
 
     @Override
@@ -30,8 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByLoginOrEmail(String login, String email) {
-        return userRepository.findByLoginOrEmailIgnoreCase(login, email);
+    public User findUserByLoginOrEmail(UserDto userDto) {
+        return userRepository.findByLoginOrEmailIgnoreCase(userDto.getLogin(), userDto.getEmail());
     }
 
     @Override
@@ -45,14 +47,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addNewUser(UserDto userDto) {
+    public UserDto addNewUser(UserDto userDto) {
         User user = new User(userDto.getLogin(), passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setEnabled(false);
         user.setRole(Collections.singleton(Role.USER));
         userRepository.saveAndFlush(user);
         confirmationTokenService.sendConfirmationToken(user);
-        return user;
+        return mapper.toDto(user);
     }
 
 }

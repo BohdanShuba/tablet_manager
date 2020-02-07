@@ -23,7 +23,7 @@ public class RegistrationController {
 
     @PostMapping("/add")
     public String addUser(UserDto userDto, Map<String, Object> model) {
-        User userFromDb = userService.findUserByLoginOrEmail(userDto.getLogin(), userDto.getEmail());
+        User userFromDb = userService.findUserByLoginOrEmail(userDto);
 
         if (userFromDb != null) {
             model.put("message", "Логин или почта уже используются");

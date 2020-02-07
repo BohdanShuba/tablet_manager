@@ -6,9 +6,9 @@ import com.diploma.tablet_manager.dto.UserDto;
 public interface UserService {
     User findUserByLogin(String login);
 
-    User findUserByLoginOrEmail(String login, String email);
+    User findUserByLoginOrEmail(UserDto userDto);
 
-    User addNewUser(UserDto userDto);
+    UserDto addNewUser(UserDto userDto);
 
     User getCurrentUser();
 }
