@@ -18,11 +18,16 @@ public class UserDrug {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
+
+
     @ManyToOne
     private Drug drug;
+
+
     @ManyToOne
     private User user;
+
     @OneToMany(mappedBy = "userDrug")
     private Set<UserDrugQuantity> quantityList;
 
