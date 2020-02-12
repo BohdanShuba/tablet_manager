@@ -6,6 +6,9 @@ import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.dto.DrugQuantityDto;
 import com.diploma.tablet_manager.dto.UserDrugWithQuantityDto;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -18,18 +21,24 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/drugs")
 @RequiredArgsConstructor
+
+@Api(value="User Tablet Manager", description="Operations pertaining with user drugs")
 public class DrugRestController {
 
     private final DrugServiceImpl drugServiceImpl;
 
-    @GetMapping(params = {"page", "size"})
-    public Page<Drug> getAllDrugs(Integer page, Integer limit) {
+    @ApiOperation(value = "View page of all drugs", response = Page.class)
+    @GetMapping(params = {"page", "limit"})
+    public Page<Drug> getAllDrugs(
+            @ApiParam(value = "Results page you want to retrieve (0..N)") Integer page,
+            @ApiParam(value = "Number of records per page")Integer limit) {
         log.info("Get all drugs request: page: " + page + " limit: " + limit);
         Page<Drug> response = drugServiceImpl.getPageDrugs(Optional.ofNullable(page).orElse(0), Optional.ofNullable(limit).orElse(10));
         log.info("Get all drugs response: " + response);
         return response;
     }
 
+    @ApiOperation(value = "View a list of user drugs", response = List.class)
     @GetMapping("/allDrugForUser")
     public List<UserDrugWithQuantityDto> getAllDrugForUser() {
         log.info("Get all user drugs request");
@@ -38,6 +47,7 @@ public class DrugRestController {
         return response;
     }
 
+    @ApiOperation(value = "View a list of classification", response = List.class)
     @GetMapping("/classification")
     public List<ClassificationDto> getClassification() {
         log.info("Get classification request");
@@ -46,33 +56,41 @@ public class DrugRestController {
         return response;
     }
 
+    @ApiOperation(value = "View a list drugs from the classification", response = Page.class)
     @GetMapping(path = "/classification/{classificationId}", params = {"page", "limit"})
-    public Page<Drug> getDrugsClassification(@PathVariable(value = "classificationId") Integer id, Integer page, Integer limit) {
+    public Page<Drug> getDrugsClassification(
+            @ApiParam(value = "Classification Id to view drugs from the category") @PathVariable(value = "classificationId")Integer id,
+            @ApiParam(value = "Results page you want to retrieve (0..N)") Integer page,
+            @ApiParam(value = "Number of records per page")Integer limit) {
         log.info("Get drugs by classification request: page: " + page + " limit: " + limit);
         Page<Drug> response = drugServiceImpl.getPageDrugsClassification(id, Optional.ofNullable(page).orElse(0), Optional.ofNullable(limit).orElse(10));
         log.info("Get drugs by classification response: " + response);
         return response;
     }
 
-
+    @ApiOperation(value = "View a list of drugs found", response = List.class)
     @GetMapping("/filter/{drugName}")
-    public List<DrugDto> filterDrugs(@PathVariable String drugName) {
+    public List<DrugDto> filterDrugs(@ApiParam (value = "Name for the drug search") @PathVariable String drugName) {
         log.info("Get drugs by name request: " + drugName);
         List<DrugDto> response = drugServiceImpl.findByNameDrugs(drugName);
         log.info("Get drugs by name response: " + response);
         return response;
     }
 
+    @ApiOperation(value = "Add tablet to user", response = DrugQuantityDto.class)
     @PostMapping("/add/{drugId}")
-    public DrugQuantityDto addDrugUser(@PathVariable Integer drugId, DrugQuantityDto drugQuantityDto) {
+    public DrugQuantityDto addDrugUser(
+            @ApiParam (value = "Drug Id to add  user drug") @PathVariable Integer drugId,
+            @ApiParam (value = "Add UserDrugQuantity object") @RequestBody DrugQuantityDto drugQuantityDto) {
         log.info("Add new drug to user request: id drug: " + drugId + " quantity and expiration date " + drugQuantityDto);
         DrugQuantityDto response = drugServiceImpl.addDrugToUser(drugId, drugQuantityDto.getQuantity(), drugQuantityDto.getExpirationDate());
         log.info("Add new drug to user response: " + response);
         return response;
     }
 
+    @ApiOperation(value = "Update number of user tablets", response = DrugQuantityDto.class)
     @PutMapping("/take/{userDrugQuantityId}")
-    public DrugQuantityDto takeDrugUser(@PathVariable Integer userDrugQuantityId, Integer quantityDrugTaken) {
+    public DrugQuantityDto takeDrugUser(@ApiParam (value = "UserDrugQuantity Id to update the quantity") @PathVariable Integer userDrugQuantityId, Integer quantityDrugTaken) {
         log.info("Set a new quantity for the drug request: id userDrugQuantity: " + userDrugQuantityId + " quantity drug taken " + quantityDrugTaken);
         DrugQuantityDto response = drugServiceImpl.changeQuantity(userDrugQuantityId, quantityDrugTaken);
         log.info("Set a new quantity for the drug response: " + response);
