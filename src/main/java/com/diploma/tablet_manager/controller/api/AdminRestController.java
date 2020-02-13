@@ -2,6 +2,7 @@ package com.diploma.tablet_manager.controller.api;
 
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.service.DrugService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
+@Api(value = "Administration", description = "Operations pertaining to administration")
 public class AdminRestController {
 
     private final DrugService drugServiceImpl;
