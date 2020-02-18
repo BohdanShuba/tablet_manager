@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDrugWithQuantityDto {
 
-    @ApiModelProperty(notes = "The database generated UserDrugQuantity ID")
+    @ApiModelProperty(notes = "The database generated UserDrug ID")
     private int id;
 
     @ApiModelProperty(notes = "The drug name")
