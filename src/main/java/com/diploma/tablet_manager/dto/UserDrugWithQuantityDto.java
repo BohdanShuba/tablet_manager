@@ -21,6 +21,6 @@ public class UserDrugWithQuantityDto {
     @ApiModelProperty(notes = "The drug instruction")
     private String instruction;
 
-    @ApiModelProperty(notes = "Set of quantity and expiration date of tablets")
+    @ApiModelProperty(notes = "Set of quantity and expiration date of drugs")
     Set<DrugQuantityDto> drugsQuantityDto;
 }
