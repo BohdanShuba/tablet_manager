@@ -1,8 +1,6 @@
 package com.diploma.tablet_manager.controller;
 
-import com.diploma.tablet_manager.domain.Classification;
 import com.diploma.tablet_manager.domain.Drug;
-import com.diploma.tablet_manager.domain.UserDrugQuantity;
 import com.diploma.tablet_manager.dto.*;
 import com.diploma.tablet_manager.service.impl.DrugServiceImpl;
 import lombok.RequiredArgsConstructor;

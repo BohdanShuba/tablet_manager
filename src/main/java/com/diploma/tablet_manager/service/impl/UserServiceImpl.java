@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto addNewUser(UserDto userDto) {
-        User user = new User(userDto.getLogin(), passwordEncoder.encode(userDto.getPassword()));
+        User user = new User(userDto.getLogin(),passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setEnabled(false);
         user.setRole(Collections.singleton(Role.USER));
