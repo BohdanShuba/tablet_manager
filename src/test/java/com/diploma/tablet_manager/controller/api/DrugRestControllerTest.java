@@ -8,15 +8,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(value = DrugRestController.class, secure = false)
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(value = DrugRestController.class, secure = false)
 public class DrugRestControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private DrugService drugService;
-
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private DrugService drugService;
+//
 
 }
