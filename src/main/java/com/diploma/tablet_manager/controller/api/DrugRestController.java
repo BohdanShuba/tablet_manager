@@ -39,7 +39,7 @@ public class DrugRestController {
     }
 
     @ApiOperation(value = "View a list of user drugs", response = List.class)
-    @GetMapping("/allDrugForUser")
+    @GetMapping("/user")
     public List<UserDrugWithQuantityDto> getAllDrugForUser() {
         log.info("Get all user drugs request");
         List<UserDrugWithQuantityDto> response = drugService.getAllDrugsForUser();
@@ -69,7 +69,7 @@ public class DrugRestController {
     }
 
     @ApiOperation(value = "View a list of drugs found", response = List.class)
-    @GetMapping("/filter/{drugName}")
+    @GetMapping("/{drugName}")
     public List<DrugDto> filterDrugs(@ApiParam(value = "Name for the drug search") @PathVariable String drugName) {
         log.info("Get drugs by name request: " + drugName);
         List<DrugDto> response = drugService.findByNameDrugs(drugName);
