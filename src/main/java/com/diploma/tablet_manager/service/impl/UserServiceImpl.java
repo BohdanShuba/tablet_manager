@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private Mapper mapper = new Mapper();
+    private final Mapper<UserDto, User> userMapper;
 
 
     @Override
@@ -48,13 +48,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto addNewUser(UserDto userDto) {
-        User user = new User(userDto.getLogin(),passwordEncoder.encode(userDto.getPassword()));
+        User user = new User(userDto.getLogin(), passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setEnabled(false);
         user.setRole(Collections.singleton(Role.USER));
         userRepository.saveAndFlush(user);
         confirmationTokenService.sendConfirmationToken(user);
-        return mapper.toDto(user);
+        return userMapper.toDto(user);
     }
 
 }

@@ -19,6 +19,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 public class DrugServiceImpl implements DrugService {
@@ -28,7 +31,10 @@ public class DrugServiceImpl implements DrugService {
     private final UserDrugQuantityRepository userDrugQuantityRepository;
     private final UserDrugRepository userDrugRepository;
     private final UserService userService;
-    private Mapper mapper = new Mapper();
+    private final Mapper<ClassificationDto, Classification> classificationMapper;
+    private final Mapper<DrugDto, Drug> drugMapper;
+    private final Mapper<DrugQuantityDto, UserDrugQuantity> userDrugQuantityMapper;
+    private final Mapper<UserDrugWithQuantityDto, UserDrug> userDrugMapper;
 
     @Override
     public List<Drug> getAllDrugs() {
@@ -49,7 +55,7 @@ public class DrugServiceImpl implements DrugService {
     public DrugDto addNewDrug(DrugDto drugDto) {
         Classification classification = classificationRepository.findAllById(drugDto.getClassificationId());
         Drug drug = new Drug(drugDto.getName(), drugDto.getInstruction(), classification);
-        return mapper.toDto(drugRepository.save(drug));
+        return drugMapper.toDto(drugRepository.save(drug));
     }
 
     @Override
@@ -63,19 +69,19 @@ public class DrugServiceImpl implements DrugService {
         List<Classification> classifications = classificationRepository.findAll();
 
         for (Classification classification : classifications) {
-            classificationsDto.add(mapper.toDto(classification));
+            classificationsDto.add(classificationMapper.toDto(classification));
         }
         return classificationsDto;
     }
 
     @Override
     public List<DrugDto> findByNameDrugs(String nameDrug) {
-        if (nameDrug != null && !nameDrug.isEmpty()) {
+        if (nonNull(nameDrug) && !nameDrug.isEmpty()) {
 
             List<Drug> drugs = drugRepository.findByName(nameDrug);
             List<DrugDto> drugDtoGroup = new LinkedList<>();
             for (Drug drug : drugs) {
-                drugDtoGroup.add(mapper.toDto(drug));
+                drugDtoGroup.add(drugMapper.toDto(drug));
             }
             return drugDtoGroup;
         }
@@ -89,20 +95,20 @@ public class DrugServiceImpl implements DrugService {
         Drug currentDrug = findByIdDrug(id);
         UserDrugQuantity userDrugQuantity;
         UserDrug currentUserDrug = getUserDrug(currentUser.getId(), currentDrug.getId());
-        if (currentUserDrug == null) {
+        if (isNull(currentUserDrug)) {
             UserDrug userDrug = new UserDrug(currentDrug, currentUser);
             userDrugQuantity = new UserDrugQuantity(userDrug, quantity, expirationDate);
         } else {
             Set<UserDrugQuantity> userDrugQuantityGroup = currentUserDrug.getQuantityList();
             userDrugQuantity = getUserDrugQuantityByDate(userDrugQuantityGroup, expirationDate);
-            if (userDrugQuantity == null) {
+            if (isNull(userDrugQuantity)) {
                 userDrugQuantity = new UserDrugQuantity(currentUserDrug, quantity, expirationDate);
             } else {
                 Integer modifiedQuantity = userDrugQuantity.getQuantity() + quantity;
                 userDrugQuantity.setQuantity(modifiedQuantity);
             }
         }
-        return mapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
+        return userDrugQuantityMapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
     }
 
     @Override
@@ -111,7 +117,7 @@ public class DrugServiceImpl implements DrugService {
         List<UserDrug> userDrugs = userDrugRepository.findByUserId(currentUser.getId());
         List<UserDrugWithQuantityDto> userDrugWithQuantityDtoGroup = new LinkedList<>();
         for (UserDrug userDrug : userDrugs) {
-            userDrugWithQuantityDtoGroup.add(mapper.toDto(userDrug));
+            userDrugWithQuantityDtoGroup.add(userDrugMapper.toDto(userDrug));
         }
         return userDrugWithQuantityDtoGroup;
     }
@@ -126,7 +132,7 @@ public class DrugServiceImpl implements DrugService {
     public DrugQuantityDto changeQuantity(Integer userDrugQuantityId, Integer newDrugCount) {
         UserDrugQuantity userDrugQuantity = getUserDrugQuantityById(userDrugQuantityId);
         userDrugQuantity.setQuantity(userDrugQuantity.getQuantity() - newDrugCount);
-        return mapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
+        return userDrugQuantityMapper.toDto(userDrugQuantityRepository.save(userDrugQuantity));
     }
 
     public List<PageDto> getPagesNumbers(Page<Drug> page) {
