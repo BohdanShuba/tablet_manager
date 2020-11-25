@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -18,19 +19,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login", "/registration/**", "/confirm/**", "/webjars/**", "/resources/images/**").permitAll()
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/login", "/registration/**", "/confirm/**", "/webjars/**", "/resources/images/**", "/api/sign/in/**", "/api/sign/up/**").permitAll()
                 .antMatchers("/admin/**", "/api/admin").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login").defaultSuccessUrl("/drug/user/home")
-                .permitAll()
-                .usernameParameter("login")
-                .passwordParameter("password")
-                .and()
-                .logout()
-                .permitAll();
+                .and();
     }
 
     @Override

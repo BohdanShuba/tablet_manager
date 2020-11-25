@@ -1,45 +1,32 @@
 package com.diploma.tablet_manager.controller;
 
-import com.diploma.tablet_manager.domain.Drug;
 import com.diploma.tablet_manager.dto.DrugDto;
 import com.diploma.tablet_manager.service.DrugService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
-
-@Controller
-@RequestMapping("/admin")
 @Log4j2
+@RestController
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
+@Api(value = "Administration", description = "Operations pertaining to administration")
 public class AdminController {
 
-    private final DrugService drugServiceImpl;
+    private final DrugService drugService;
 
-    @GetMapping("/administration")
-    public String adm(Map<String, Object> model) {
-        return "administrationPage";
+    @ApiOperation(value = "Add new drug", response = DrugDto.class)
+    @PostMapping
+    public DrugDto add(@ApiParam(value = "Drug object store in database table") @RequestBody DrugDto drugDto) {
+        log.info("Add drug request: " + drugDto);
+        DrugDto response = drugService.addNewDrug(drugDto);
+        log.info("Add drug response: " + response);
+        return response;
     }
-
-
-    @PostMapping("/administration")
-    public String add(@ModelAttribute DrugDto drugDto, Map<String, Object> model) {
-        try {
-            log.info("Add drug. Drug: " + drugDto);
-            drugServiceImpl.addNewDrug(drugDto);
-            List<Drug> response = drugServiceImpl.getAllDrugs();
-            model.put("drugs", response);
-            log.info("Drug response: " + response);
-        } catch (Exception e) {
-            log.error("Cannot add drug", e);
-        }
-        return "administrationPage";
-    }
-
 }

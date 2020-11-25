@@ -11,4 +11,6 @@ public interface UserService {
     UserDto addNewUser(UserDto userDto);
 
     User getCurrentUser();
+
+    User findByLoginAndPassword(String login, String password);
 }

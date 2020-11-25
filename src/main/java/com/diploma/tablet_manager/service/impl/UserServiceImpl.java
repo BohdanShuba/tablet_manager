@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
         return currentUser;
     }
 
-
     @Override
     @Transactional
     public UserDto addNewUser(UserDto userDto) {
@@ -57,4 +56,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    @Override
+    public User findByLoginAndPassword(String login, String password) {
+        User user = findUserByLogin(login);
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
