@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 public class SignInDto {
-    @NotBlank(message = "Email should be valid")
+    @NotBlank(message = "Login should be valid")
     private String login;
 
     @NotBlank(message = "Password cannot be empty")
