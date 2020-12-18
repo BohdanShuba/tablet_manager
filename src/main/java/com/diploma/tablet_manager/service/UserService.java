@@ -1,6 +1,7 @@
 package com.diploma.tablet_manager.service;
 
 import com.diploma.tablet_manager.domain.User;
+import com.diploma.tablet_manager.dto.SignUpDto;
 import com.diploma.tablet_manager.dto.UserDto;
 
 public interface UserService {
@@ -9,6 +10,7 @@ public interface UserService {
     User findUserByLoginOrEmail(UserDto userDto);
 
     UserDto addNewUser(UserDto userDto);
+    void registerNewUser(SignUpDto signUpDto);
 
     User getCurrentUser();
 

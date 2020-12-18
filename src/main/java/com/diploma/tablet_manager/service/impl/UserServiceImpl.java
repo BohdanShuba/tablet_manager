@@ -2,6 +2,7 @@ package com.diploma.tablet_manager.service.impl;
 
 import com.diploma.tablet_manager.domain.Role;
 import com.diploma.tablet_manager.domain.User;
+import com.diploma.tablet_manager.dto.SignUpDto;
 import com.diploma.tablet_manager.dto.UserDto;
 import com.diploma.tablet_manager.mapper.Mapper;
 import com.diploma.tablet_manager.repos.UserRepository;
@@ -34,6 +35,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByLoginOrEmail(UserDto userDto) {
         return userRepository.findByLoginOrEmailIgnoreCase(userDto.getLogin(), userDto.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void registerNewUser(SignUpDto signUpDto) {
+        
     }
 
     @Override

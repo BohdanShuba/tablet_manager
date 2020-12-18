@@ -3,6 +3,7 @@ package com.diploma.tablet_manager.controller;
 import com.diploma.tablet_manager.config.jwt.JwtProvider;
 import com.diploma.tablet_manager.domain.User;
 import com.diploma.tablet_manager.dto.AuthorizeJwtDto;
+import com.diploma.tablet_manager.dto.SignUpDto;
 import com.diploma.tablet_manager.dto.SignInDto;
 import com.diploma.tablet_manager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class AuthorizationController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/sign/in")
-    public AuthorizeJwtDto signIn(@Valid @RequestBody SignInDto signInDto) {
-        User userEntity = userService.findByLoginAndPassword(signInDto.getLogin(), signInDto.getPassword());
+    public AuthorizeJwtDto signIn(@Valid @RequestBody SignInDto signinDto) {
+        User userEntity = userService.findByLoginAndPassword(signinDto.getLogin(), signinDto.getPassword());
         String token = jwtProvider.generateToken(userEntity.getLogin());
         return new AuthorizeJwtDto(token,
                 userEntity.getId(),
@@ -31,9 +32,9 @@ public class AuthorizationController {
                 userEntity.getRole());
     }
 
-//    @PostMapping("/sign/up")
-//    public String signUp(@Valid SignInDto signInDto) {
-//        String token = signInDto.toString();
-//        return token;
-//    }
+    @PostMapping("/sign/up")
+    public String signUp(@Valid @RequestBody SignUpDto signUpDto) {
+        String token = signUpDto.toString();
+        return token;
+    }
 }
